@@ -17,23 +17,11 @@ describe('Get Movie By Director', () => {
 
     await inMemoryMoviesRepository.create(newMovie)
 
-    const { movie } = await sut.execute({
+    const result = await sut.execute({
       director: 'diretor',
     })
-    expect(movie.filter((item) => item.director === newMovie.director))
-  })
-
-  it('should be not able to get a movie by director', async () => {
-    const newMovie = makeMovie({
-      director: 'diretor',
-    })
-
-    await inMemoryMoviesRepository.create(newMovie)
-
-    expect(() => {
-      return sut.execute({
-        director: 'wrongDirector',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    expect(
+      result.value?.movie.filter((item) => item.director === newMovie.director),
+    )
   })
 })

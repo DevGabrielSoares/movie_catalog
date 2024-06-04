@@ -17,10 +17,10 @@ describe('Get Movie By Title', () => {
 
     await inMemoryMoviesRepository.create(newMovie)
 
-    const { movie } = await sut.execute({
+    const result = await sut.execute({
       title: 'example-movie',
     })
 
-    expect(movie.title).toEqual(newMovie.title)
+    expect(result.value?.movie.title).toEqual(newMovie.title)
   })
 })

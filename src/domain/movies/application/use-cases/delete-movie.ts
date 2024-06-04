@@ -1,10 +1,12 @@
+import { Either, left, right } from '@/core/either'
 import { MoviesRepository } from '../repositories/movies-repository'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 interface DeleteMovieUseCaseRequest {
   movieId: string
 }
 
-interface DeleteMovieUseCaseResponse {}
+type DeleteMovieUseCaseResponse = Either<ResourceNotFoundError, null>
 
 export class DeleteMovieUseCase {
   constructor(private movieRepository: MoviesRepository) {}
@@ -15,11 +17,11 @@ export class DeleteMovieUseCase {
     const movie = await this.movieRepository.findById(movieId)
 
     if (!movie) {
-      throw new Error('Movie not found.')
+      return left(new ResourceNotFoundError())
     }
 
     await this.movieRepository.delete(movie)
 
-    return {}
+    return right({})
   }
 }

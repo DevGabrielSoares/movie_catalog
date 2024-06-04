@@ -17,10 +17,10 @@ describe('Get User By Email', () => {
 
     await inMemoryUsersRepository.create(newUser)
 
-    const { user } = await sut.execute({
+    const result = await sut.execute({
       email: 'example-email',
     })
 
-    expect(user.email).toEqual(newUser.email)
+    expect(result.value?.user.email).toEqual(newUser.email)
   })
 })

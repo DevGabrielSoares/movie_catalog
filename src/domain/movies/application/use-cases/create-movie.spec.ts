@@ -11,7 +11,7 @@ describe('Create Movie', () => {
   })
 
   it('should be able to create a movie', async () => {
-    const { movie } = await sut.execute({
+    const result = await sut.execute({
       title: 'Filme 1',
       director: 'Diretor 1',
       genre: ['Genre 1'],
@@ -20,7 +20,7 @@ describe('Create Movie', () => {
       synopsis: 'eueueueue',
     })
 
-    expect(movie.id).toBeTruthy()
-    expect(inMemoryMoviesRepository.items[0].id).toEqual(movie.id)
+    expect(result.isRight()).toBe(true)
+    expect(inMemoryMoviesRepository.items[0]).toEqual(result.value?.movie)
   })
 })

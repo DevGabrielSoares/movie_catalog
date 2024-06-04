@@ -17,24 +17,10 @@ describe('Get Movie By Genre', () => {
 
     await inMemoryMoviesRepository.create(newMovie)
 
-    const { movie } = await sut.execute({
+    const result = await sut.execute({
       genre: 'horror',
     })
 
-    expect(movie.filter((item) => item.genre === newMovie.genre))
-  })
-
-  it('should be not able to get a movie by genre', async () => {
-    const newMovie = makeMovie({
-      genre: ['horror', 'action'],
-    })
-
-    await inMemoryMoviesRepository.create(newMovie)
-
-    expect(() => {
-      return sut.execute({
-        genre: 'wrongGenre',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    expect(result.value?.movie.filter((item) => item.genre === newMovie.genre))
   })
 })

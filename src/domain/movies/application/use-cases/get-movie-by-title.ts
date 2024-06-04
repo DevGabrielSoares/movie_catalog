@@ -1,13 +1,16 @@
+import { Either, left, right } from '@/core/either'
 import { Movie } from '../../enterprise/entities/movie'
 import { MoviesRepository } from '../repositories/movies-repository'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 interface GetMovieByTitleUseCaseRequest {
   title: string
 }
 
-interface GetMovieByTitleUseCaseResponse {
-  movie: Movie
-}
+type GetMovieByTitleUseCaseResponse = Either<
+  ResourceNotFoundError,
+  { movie: Movie }
+>
 
 export class GetMovieByTitleUseCase {
   constructor(private moviesRepository: MoviesRepository) {}
@@ -18,11 +21,9 @@ export class GetMovieByTitleUseCase {
     const movie = await this.moviesRepository.findByTitle(title)
 
     if (!movie) {
-      throw new Error('Movie not found')
+      return left(new ResourceNotFoundError())
     }
 
-    return {
-      movie,
-    }
+    return right({ movie })
   }
 }

@@ -11,13 +11,13 @@ describe('Create User', () => {
   })
 
   it('should be able to create a user', async () => {
-    const { user } = await sut.execute({
+    const result = await sut.execute({
       name: 'nome 1',
       email: 'email@email.com',
       password: 'senha555',
     })
 
-    expect(user.id).toBeTruthy()
-    expect(inMemoryUsersRepository.items[0].id).toEqual(user.id)
+    expect(result.isRight()).toBe(true)
+    expect(inMemoryUsersRepository.items[0]).toEqual(result.value?.user)
   })
 })

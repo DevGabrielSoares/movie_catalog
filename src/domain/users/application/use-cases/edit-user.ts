@@ -1,5 +1,7 @@
+import { Either, left, right } from '@/core/either'
 import { User } from '../../enterprise/entities/user'
 import { UsersRepository } from '../repositories/users-repository'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 interface EditUserUseCaseRequest {
   userId: string
@@ -8,9 +10,7 @@ interface EditUserUseCaseRequest {
   password: string
 }
 
-interface EditUserUseCaseResponse {
-  user: User
-}
+type EditUserUseCaseResponse = Either<ResourceNotFoundError, { user: User }>
 
 export class EditUserUseCase {
   constructor(private userRepository: UsersRepository) {}
@@ -24,7 +24,7 @@ export class EditUserUseCase {
     const user = await this.userRepository.findById(userId)
 
     if (!user) {
-      throw new Error('User not found.')
+      return left(new ResourceNotFoundError())
     }
 
     user.name = name
@@ -33,8 +33,6 @@ export class EditUserUseCase {
 
     await this.userRepository.save(user)
 
-    return {
-      user,
-    }
+    return right({ user })
   }
 }

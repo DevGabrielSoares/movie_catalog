@@ -1,5 +1,7 @@
+import { Either, left, right } from '@/core/either'
 import { Movie } from '../../enterprise/entities/movie'
 import { MoviesRepository } from '../repositories/movies-repository'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 interface EditMovieUseCaseRequest {
   movieId: string
@@ -11,9 +13,7 @@ interface EditMovieUseCaseRequest {
   cast: string[]
 }
 
-interface EditMovieUseCaseResponse {
-  movie: Movie
-}
+type EditMovieUseCaseResponse = Either<ResourceNotFoundError, { movie: Movie }>
 
 export class EditMovieUseCase {
   constructor(private movieRepository: MoviesRepository) {}
@@ -30,7 +30,7 @@ export class EditMovieUseCase {
     const movie = await this.movieRepository.findById(movieId)
 
     if (!movie) {
-      throw new Error('Movie not found.')
+      return left(new ResourceNotFoundError())
     }
 
     movie.title = title
@@ -42,8 +42,6 @@ export class EditMovieUseCase {
 
     await this.movieRepository.save(movie)
 
-    return {
-      movie,
-    }
+    return right({ movie })
   }
 }

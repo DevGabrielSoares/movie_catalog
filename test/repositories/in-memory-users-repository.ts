@@ -25,13 +25,9 @@ export class InMemoryUsersRepository implements UsersRepository {
   }
 
   async findAll() {
-    const user = this.items.find((item) => item)
+    const users = this.items.filter((item) => item)
 
-    if (!user) {
-      return null
-    }
-
-    return user
+    return users
   }
 
   async create(user: User) {

@@ -1,3 +1,4 @@
+import { Either, right } from '@/core/either'
 import { Movie } from '../../enterprise/entities/movie'
 import { MoviesRepository } from '../repositories/movies-repository'
 
@@ -10,9 +11,7 @@ interface CreateMovieUseCaseRequest {
   cast: string[]
 }
 
-interface CreateMovieUseCaseResponse {
-  movie: Movie
-}
+type CreateMovieUseCaseResponse = Either<null, { movie: Movie }>
 
 export class CreateMovieUseCase {
   constructor(private movieRepository: MoviesRepository) {}
@@ -36,8 +35,6 @@ export class CreateMovieUseCase {
 
     await this.movieRepository.create(movie)
 
-    return {
-      movie,
-    }
+    return right({ movie })
   }
 }

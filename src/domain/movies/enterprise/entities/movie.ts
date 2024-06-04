@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { Entity } from '@/core/entities/entity'
 import { Optional } from '@/core/types/optional'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
@@ -45,10 +44,6 @@ export class Movie extends Entity<MovieProps> {
 
   get updatedAt() {
     return this.props.updatedAt
-  }
-
-  get isNew(): boolean {
-    return dayjs().diff(this.release, 'month') <= 3
   }
 
   private touch() {

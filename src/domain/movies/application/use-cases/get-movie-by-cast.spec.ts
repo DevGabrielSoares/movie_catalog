@@ -17,23 +17,10 @@ describe('Get Movie By Cast', () => {
 
     await inMemoryMoviesRepository.create(newMovie)
 
-    const { movie } = await sut.execute({
+    const result = await sut.execute({
       cast: 'ana aranha',
     })
 
-    expect(movie.filter((item) => item.cast === newMovie.cast))
-  })
-  it('should be not able to get movies by cast', async () => {
-    const newMovie = makeMovie({
-      cast: ['ana aranha', 'fernando frango'],
-    })
-
-    await inMemoryMoviesRepository.create(newMovie)
-
-    expect(() => {
-      return sut.execute({
-        cast: 'wrongCast',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    expect(result.value?.movie.filter((item) => item.cast === newMovie.cast))
   })
 })

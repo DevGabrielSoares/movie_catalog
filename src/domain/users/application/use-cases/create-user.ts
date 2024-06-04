@@ -1,3 +1,4 @@
+import { Either, right } from '@/core/either'
 import { User } from '../../enterprise/entities/user'
 import { UsersRepository } from '../repositories/users-repository'
 import { hash } from 'bcryptjs'
@@ -8,9 +9,7 @@ interface CreateUserUseCaseRequest {
   password: string
 }
 
-interface CreateUserUseCaseResponse {
-  user: User
-}
+type CreateUserUseCaseResponse = Either<null, { user: User }>
 
 export class CreateUserUseCase {
   constructor(private userRepository: UsersRepository) {}
@@ -30,8 +29,6 @@ export class CreateUserUseCase {
 
     await this.userRepository.create(user)
 
-    return {
-      user,
-    }
+    return right({ user })
   }
 }

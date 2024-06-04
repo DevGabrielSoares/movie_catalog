@@ -55,11 +55,7 @@ export class InMemoryMoviesRepository implements MoviesRepository {
   }
 
   async findAll() {
-    const movie = this.items.find((item) => item)
-
-    if (!movie) {
-      return null
-    }
+    const movie = this.items.filter((item) => item)
 
     return movie
   }
