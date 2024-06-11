@@ -1,29 +1,16 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { TypeOrmModule } from '@nestjs/typeorm'
-// import { envSchema } from '@/env'
-// import { dataSourceModuleOptions } from './database/typeorm/data-source/data-source'
+import { ConfigModule } from '@nestjs/config'
+import { CreateAccountController } from './http/users/controllers/create-account.controller'
+import { HttpModule } from './http/http.module'
+import { DatabaseModule } from './database/database.module'
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      username: 'postgres',
-      password: 'docker',
-      port: 5432,
-      database: 'mks',
-      synchronize: true,
-    }),
-    /* TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) =>
-        configService.get('database'),
-      inject: [ConfigService], 
-    }), */
+    DatabaseModule,
+    HttpModule,
   ],
   controllers: [],
   providers: [],

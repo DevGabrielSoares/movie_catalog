@@ -2,6 +2,7 @@ import { Either, right } from '@/core/either'
 import { User } from '../../enterprise/entities/user'
 import { UsersRepository } from '../repositories/users-repository'
 import { hash } from 'bcryptjs'
+import { Injectable } from '@nestjs/common'
 
 interface CreateUserUseCaseRequest {
   name: string
@@ -11,6 +12,7 @@ interface CreateUserUseCaseRequest {
 
 type CreateUserUseCaseResponse = Either<null, { user: User }>
 
+@Injectable()
 export class CreateUserUseCase {
   constructor(private userRepository: UsersRepository) {}
 
