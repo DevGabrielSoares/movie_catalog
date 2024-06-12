@@ -3,6 +3,8 @@ import { User } from '../../enterprise/entities/user'
 import { UsersRepository } from '../repositories/users-repository'
 import { hash } from 'bcryptjs'
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 
 interface CreateUserUseCaseRequest {
   name: string
@@ -14,7 +16,10 @@ type CreateUserUseCaseResponse = Either<null, { user: User }>
 
 @Injectable()
 export class CreateUserUseCase {
-  constructor(private userRepository: UsersRepository) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
   async execute({
     name,
