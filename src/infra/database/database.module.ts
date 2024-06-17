@@ -1,3 +1,4 @@
+import { Movie } from '@/domain/movies/enterprise/entities/movie'
 import { User } from '@/domain/users/enterprise/entities/user'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -9,11 +10,11 @@ import { TypeOrmModule } from '@nestjs/typeorm'
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'postgres',
+      password: 'docker',
       database: 'mks',
-      entities: [User],
+      entities: [User, Movie],
       synchronize: true,
     }),
   ],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}
