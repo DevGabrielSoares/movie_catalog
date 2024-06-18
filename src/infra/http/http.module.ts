@@ -5,9 +5,11 @@ import { DatabaseModule } from '../database/database.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from '@/domain/users/enterprise/entities/user'
 import { Movie } from '@/domain/movies/enterprise/entities/movie'
+import { UserEntity } from '../database/entities/user.entity'
+import { MovieEntity } from '../database/entities/movie.entity'
 
 @Module({
-  imports: [DatabaseModule, TypeOrmModule.forFeature([User, Movie])],
+  imports: [DatabaseModule, TypeOrmModule.forFeature([UserEntity, MovieEntity])],
   controllers: [CreateAccountController],
   providers: [CreateUserUseCase],
 })

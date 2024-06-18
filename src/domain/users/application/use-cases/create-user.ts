@@ -1,24 +1,24 @@
-import { Either, right } from '@/core/either'
-import { User } from '../../enterprise/entities/user'
-import { UsersRepository } from '../repositories/users-repository'
-import { hash } from 'bcryptjs'
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Either, right } from '@/core/either';
+import { UserEntity } from '@/infra/database/entities/user.entity';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { hash } from 'bcryptjs';
+import { Repository } from 'typeorm';
+import { User } from '../../enterprise/entities/user';
 
 interface CreateUserUseCaseRequest {
-  name: string
-  email: string
-  password: string
+  name: string;
+  email: string;
+  password: string;
 }
 
-type CreateUserUseCaseResponse = Either<null, { user: User }>
+type CreateUserUseCaseResponse = Either<null, { user: User }>;
 
 @Injectable()
 export class CreateUserUseCase {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>
   ) {}
 
   async execute({
@@ -26,18 +26,24 @@ export class CreateUserUseCase {
     email,
     password,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    const hashedPassword = await hash(password, 8)
+    const hashedPassword = await hash(password, 8);
 
-    const user = User.create({
+    // const user = User.create({
+    //   name,
+    //   email,
+    //   password: hashedPassword,
+    // })
+
+    const user = {
       name,
       email,
       password: hashedPassword,
-    })
+    };
 
-    await this.userRepository.create(user)
+    const user1 = await this.userRepository.save(user);
 
-    console.log(user)
+    console.log(user);
 
-    return right({ user })
+    return right({ user });
   }
 }

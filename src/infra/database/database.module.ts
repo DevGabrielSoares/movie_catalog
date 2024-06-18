@@ -1,7 +1,7 @@
-import { Movie } from '@/domain/movies/enterprise/entities/movie'
-import { User } from '@/domain/users/enterprise/entities/user'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { MovieEntity } from './entities/movie.entity'
+import { UserEntity } from './entities/user.entity'
 
 @Module({
   imports: [
@@ -12,8 +12,9 @@ import { TypeOrmModule } from '@nestjs/typeorm'
       username: 'postgres',
       password: 'docker',
       database: 'mks',
-      entities: [User, Movie],
+      entities: [UserEntity, MovieEntity],
       synchronize: true,
+      migrations:[]
     }),
   ],
 })
