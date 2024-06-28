@@ -6,36 +6,21 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { UserEntity } from '@/infra/database/entities/user.entity'
 import { Repository } from 'typeorm'
 
-interface GetUserByEmailUseCaseRequest {
-  email: string
-}
+type GetUsersUseCaseResponse = Either<ResourceNotFoundError, { user: User[] }>
 
-type GetUserByEmailUseCaseResponse = Either<
-  ResourceNotFoundError,
-  { user: User }
->
-
-export class GetUserByEmailUseCase {
+export class GetUsersUseCase {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async execute({
-    email,
-  }: GetUserByEmailUseCaseRequest): Promise<GetUserByEmailUseCaseResponse> {
-    const userEnity = await this.userRepository.findOne({ where: { email } })
+  async execute(): Promise<GetUsersUseCaseResponse> {
+    const users = await this.userRepository.find()
 
-    const user = {
-      name: userEnity.name,
-      email: userEnity.email,
-      password: userEnity.password,
-    }
-
-    if (!user) {
+    if (!users) {
       return left(new ResourceNotFoundError())
     }
 
-    return right({ user })
+    return right({ users })
   }
 }

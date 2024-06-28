@@ -9,6 +9,5 @@ export class Entity<Props> {
 
   protected constructor(props: Props, id?: UniqueEntityID) {
     this.props = props
-   
   }
 }

@@ -14,7 +14,7 @@ import { UserEntity } from './entities/user.entity'
       database: 'mks',
       entities: [UserEntity, MovieEntity],
       synchronize: true,
-      migrations:[]
+      migrations: [],
     }),
   ],
 })

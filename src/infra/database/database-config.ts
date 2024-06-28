@@ -15,7 +15,7 @@ const dataSourceOptions: DataSourceOptions = {
   username: configService.get<string>('POSTGRES_USERNAME'),
   password: configService.get<string>('POSTGRES_PASSWORD'),
   database: configService.get<string>('POSTGRES_NAME'),
-  entities: [__dirname + '/../**/*.entity.ts'],
+  entities: [MovieEntity, UserEntity],
   synchronize: true,
   migrations: ['./src/infra/database/migrations/*.ts'],
 }
